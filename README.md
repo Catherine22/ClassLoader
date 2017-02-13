@@ -1,7 +1,7 @@
 ClassLoader
 ===================
 
-Loading apks from external storage by another app (ClassLoader). You can automatically update you app without reinstalling because you do everything in your apk. It's just like 'hotfix'.
+Loading apks from internal storage by another app (ClassLoader). You can automatically update you app without reinstalling because you do everything in your apk. It's just like 'hotfix'.
 
 In this project, I use this app to load  [Resource1.apk] and  [Resource2.apk].
 # Features
