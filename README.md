@@ -143,16 +143,16 @@ try {
 
 # Warning
 
- ## 1. Android Studio Settings
+#### 1. Android Studio Settings
  
  Disabled to Instant Run when running classLoader application
  ![enter description here][1]
  
- ## 2. Loading resource from apk
+#### 2. Loading resource from apk
  
  Resources path: Android/data/package/files/xxx.apk
  
- ## 3. Multidex issue
+#### 3. Multidex
  
  In build.gradle, disable multidex.
  
@@ -160,7 +160,7 @@ try {
 multiDexEnabled false
 ```
 
- ## 4. Manifest
+#### 4. Manifest
  
   - **Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And remember that you most prefix your activity name with it's package.
 
@@ -170,7 +170,7 @@ E.g.
 <activity android:name="com.catherine.resource2.MainActivity" />
 ```
 
- ## 5. View
+#### 5. View
  
  In your apk, you can't just get the view by setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
  
