@@ -19,17 +19,14 @@ This application is used to load classes from another apks, you can launch activ
  5. Switch apk, it means that you can load more than an apk. But in general, I think you just need to package all of your logic into an apk and loading an apk is fair enough.
 
 ----------
-# Quick start
-
-
-----------
 
 
 # Warning
  ## 1. Android Studio Settings
- Disable to Instant Run
+ Disabled to Instant Run when running classLoader application
+ ![enter description here][1]
  ## 2. Loading resource from apk
- Resource path: Android/data/package/files/resource1.apk
+ Resources path: Android/data/package/files/xxx.apk
  ## 3. Multidex issue
  In build.gradle, disable multidex.
  
@@ -37,7 +34,7 @@ This application is used to load classes from another apks, you can launch activ
 multiDexEnabled false
 ```
  ## 4. Manifest
-  - Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. **And remember that you most prefix your activity name with it's package**.
+  - **Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And remember that you most prefix your activity name with it's package.
 
 E.g.
 ```xml
@@ -54,9 +51,10 @@ Illegal
 setContentView(R.layout.activity_main);
 ```
 
-legal
+Legal
 ``` java
 setContentView(View.inflate(getApplicationContext(), R.layout.activity_main, null));
 ```
 
 
+  [1]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/screen%20shot.png
