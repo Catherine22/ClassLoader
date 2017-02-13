@@ -16,7 +16,7 @@ In this project, I use this app to load [Resource1.apk] and [Resource2.apk].
 
  1. Load codes from another Apk, including classes, jars, etc.
  2. You put your logic to an apk, all you have to do is download  this apk and loading it.
- 3. Shrink your app and protect your codes.
+ 3. Shrink your app and hide your codes.
  4. Automatic updates
  5. Switch apk, it means that you can load more than an apk. But in general, I think you just need to package all of your logic into an apk and loading an apk is fair enough.
 
@@ -24,7 +24,7 @@ In this project, I use this app to load [Resource1.apk] and [Resource2.apk].
 
 # Illustration
 
-  - This application is used to load classes from another apks, you can launch activities and call methods from another apk, we don't put logic in this app.
+  - This application is used to load classes from another apk, you can launch activities or call methods from another apk, so we don't put logic in this app.
   - Using getClassLoader().loadClass() to get activities from an apk, and calling methods or fields by Java reflection.
 
 Here're some reflection examples:
@@ -133,6 +133,11 @@ try {
 
 ``` java
 try {
+	apkUtils = getClassLoader().loadClass("com.catherine.resource1.Utils");
+} catch (ClassNotFoundException e) {
+	e.printStackTrace();
+}
+try {
 	Field myStaticField = apkUtils.getDeclaredField("myStaticField");
 	Log.d("Reflection" , myStaticField.getName() + ":\t" + myStaticField.get(null));
 
@@ -148,6 +153,18 @@ try {
 }
 ```
 
+ - Or maybe you don't want to use any methods or fields, you just launch the activity
+ 
+``` java
+try {
+	Class<?>  apkActivity = getClassLoader().loadClass("com.catherine.resource1.MainActivity");
+	Intent intent = new Intent();
+	intent.setClass(MainActivity.this, apkActivity);
+	startActivity(intent);
+} catch (ClassNotFoundException e) {
+	e.printStackTrace();
+}
+```
 
 # Warning
 
