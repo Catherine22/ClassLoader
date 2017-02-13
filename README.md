@@ -1,7 +1,7 @@
 ClassLoader
 ===================
 
-Loading apks from internal storage by this app (ClassLoader). You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded. All you have to do is fix bugs or add new features and package to an apk, then upload it to your host. As you launch this app, it connects to server to download the apk you uploaded, and load it.It's just like 'hotfix'.
+Loading apks from internal storage by this app (ClassLoader). You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded. All you have to do is fix bugs or add new features and package to an apk, then upload it to your host. As you launch this app, it downloads the apk you uploaded and load it. It's a little like 'hotfix'.
 
 So, the most important features of ClassLoader is
  1. Download and varify the apk
