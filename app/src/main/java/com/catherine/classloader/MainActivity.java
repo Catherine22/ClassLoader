@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bt_load_apk2 = (Button) findViewById(R.id.bt_load_apk2);
         bt_load_apk2.setOnClickListener(this);
 
+
         //download apk from your server and save it to Android/data/this app's package name/files/.
         //you can just put your apks into Android/data/this app's package name/files/.
         tv_console.setText("Download apk...\n");
@@ -43,7 +44,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_load_apk1:
+                ((MyApplication) getApplication()).RemoveApk();
                 openApk(MyConfig.apk1);
+                break;
+            case R.id.bt_load_apk2:
+                ((MyApplication) getApplication()).RemoveApk();
+                openApk(MyConfig.apk2);
                 break;
             case R.id.bt_call_method:
                 try {
@@ -95,15 +101,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } catch (InstantiationException e) {
                     e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
                 break;
             case R.id.bt_launch_apk:
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, apkActivity);
                 startActivity(intent);
-                break;
-            case R.id.bt_load_apk2:
-                openApk(MyConfig.apk2);
                 break;
         }
     }
@@ -125,11 +130,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK2_ACTIVITY_MAIN);
                 apkUtils = getClassLoader().loadClass(MyConfig.APK2_UTILS);
             }
+            history = tv_console.getText().toString();
+            tv_console.setText("Done!" + "\n----\n" + history);
         } catch (Exception e) {
             e.printStackTrace();
+
+            if (e instanceof ClassNotFoundException) {
+                history = tv_console.getText().toString();
+                tv_console.setText("Have you ever put your apk into correct dictionary?" + "\n----\n" + history);
+            }
         }
-        history = tv_console.getText().toString();
-        tv_console.setText("Done!" + "\n----\n" + history);
     }
 
     private void logClassLoader(String msg) {
@@ -145,5 +155,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Remove the latest loaded-apk
+        ((MyApplication) getApplication()).RemoveApk();
+        Log.d("MainActivity", "onDestroy");
     }
 }
