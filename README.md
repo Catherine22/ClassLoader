@@ -2,6 +2,8 @@ ClassLoader
 ===================
 
 Loading apks from external storage by another app (ClassLoader). You can automatically update you app without reinstalling because you do everything in your apk. It's just like 'hotfix'.
+
+In this project, I use this app to load  [Resource1.apk] and  [Resource2.apk].
 # Features
 
  1. Load codes from another Apk, including classes, jars, etc.
@@ -140,18 +142,26 @@ try {
 
 
 # Warning
+
  ## 1. Android Studio Settings
+ 
  Disabled to Instant Run when running classLoader application
  ![enter description here][1]
+ 
  ## 2. Loading resource from apk
+ 
  Resources path: Android/data/package/files/xxx.apk
+ 
  ## 3. Multidex issue
+ 
  In build.gradle, disable multidex.
  
 ``` gradle
 multiDexEnabled false
 ```
+
  ## 4. Manifest
+ 
   - **Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And remember that you most prefix your activity name with it's package.
 
 E.g.
@@ -159,7 +169,9 @@ E.g.
 <activity android:name="com.catherine.resource1.MainActivity" />
 <activity android:name="com.catherine.resource2.MainActivity" />
 ```
+
  ## 5. View
+ 
  In your apk, you can't just get the view by setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
  
 E.g.
@@ -182,4 +194,7 @@ But if you try to load multi-apks, there still are some problems I haven't fixed
 If there're some libraries likes support-v4, zxing, whatever, you imported these libraries to both apks (in this case, it means resource1.apk and resource2.apk). And when you call methods or launch activities that are included the same libraries, it'll crash because resources're not found.
 
 So there's a workaround here that you must not use the same libraries in any apks you wanna load or you just load an apk.
+
   [1]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/screen%20shot.png
+  [Resource1.apk]:<https://github.com/Catherine22/Resource1>
+  [Resource2.apk]:<https://github.com/Catherine22/Resource2>
