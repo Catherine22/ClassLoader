@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -93,6 +94,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     int returns6 = (Integer) getIntValue.invoke(cons.newInstance());
                     history = tv_console.getText().toString();
                     tv_console.setText("getIntValue:\t" + returns6 + "\n----\n" + history);
+
+                    //Fields
+                    Field myStaticField = apkUtils.getDeclaredField("myStaticField");
+
+                    history = tv_console.getText().toString();
+                    tv_console.setText(myStaticField.getName() + ":\t" + myStaticField.get(null) + "\n----\n" + history);
+
+                    myStaticField.setAccessible(true);//You can update the field.
+                    myStaticField.set(null, "new value");
+                    myStaticField.setAccessible(false);
+
+                    history = tv_console.getText().toString();
+                    tv_console.setText(myStaticField.getName() + " updated:\t" + myStaticField.get(null) + "\n----\n" + history);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
@@ -102,6 +116,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
                     e.printStackTrace();
                 }
                 break;
