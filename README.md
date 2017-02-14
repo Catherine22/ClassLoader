@@ -1,7 +1,7 @@
 ClassLoader
 ===================
 
-This repository hosts examples of loading apks dynamical and in-depth documentation.
+This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
 It's a very powerful technique to load apks from internal storage by ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
 
@@ -20,8 +20,8 @@ Therefore, you most create two projects, one loads classes and one includes logi
  - Load the apk
 
 ### And what the main apk does are
- 1. Features you really use like chatting, taking photos, scanning QR codes, etc.
- 2. Your user interface, logic, libraries... any bussiness your app providers.
+ -  Features you really use like chatting, taking photos, scanning QR codes, etc.
+ -  Your user interface, logic, libraries... any bussiness your app providers.
 
 In this project, I use this app to load [Resource1.apk] and [Resource2.apk].
 # Features
@@ -66,7 +66,7 @@ In an Android device, it packages your classes into one (or more) dex file(s) wh
 
 Here are class loaders based on Android:
 
-|ClassLoader|Summary|
+|Class Loader|Summary|
 |----|----|
 |BootClassLoader|The top parent of the following classLoaders.|
 |PathClassLoader|Load classes located in data/app/... where your app installed.<br>Android uses this class for its system class loader and for its application class loader(s).|
@@ -157,7 +157,36 @@ findClass(name);
 ```
 
 And now, you can easily figure out that once a class has been loaded, it'll never be load again. 
-An
+
+
+## Scenarios
+
+Let's play with some scenarios of class loaders.
+```java
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+		
+        Log.i(TAG, "Load core java libraries by " + String.class.getClassLoader());
+        Log.i(TAG, "Load user-defined classes by " + MainActivity.class.getClassLoader());
+        Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
+        Log.i(TAG, "Default classLoader is " + getClassLoader());
+        Log.i(TAG, "Default system classLoader is \"" + ClassLoader.getSystemClassLoader());
+}
+```
+
+We got
+
+|Class Loader|Methods|
+|----|----|
+|BootClassLoader|  String.class.getClassLoader() |
+|PathClassLoader[[DexPathList[[directory...|  MainActivity.class.getClassLoader()<br>AppCompatActivity.class.getClassLoader()<br>ClassLoader.getSystemClassLoader() |
+|PathClassLoader[DexPathList[[zip file...|getClassLoader()|
+
+  - Both user-defined classes and libraries are loaded by PathClassLoader.
+  - Core java libraries like java.lang.String are loaded by BootClassLoader. So you can't create a String class and replace java.lang.String, even though they've got the same package name and class name. **Android believes that they are totally different classes because they are from different class loaders.**
+  
 
 ## About this project
 
@@ -359,6 +388,7 @@ And then there's a workaround here that you must not use the same libraries in a
 # Reference
  - [Android动态加载基础 ClassLoader工作机制]
  - [Understanding and Experimenting with MultiDex]
+ - [Android ClassLoader机制]
  
 
   [Resource1.apk]:<https://github.com/Catherine22/Resource1>
@@ -366,9 +396,12 @@ And then there's a workaround here that you must not use the same libraries in a
   
   [Android动态加载基础 ClassLoader工作机制]:<https://segmentfault.com/a/1190000004062880>  
   [Understanding and Experimenting with MultiDex]:<https://youtu.be/skmOBriQ28E>
+  [Android ClassLoader机制]:<http://blog.csdn.net/mr_liabill/article/details/50497055>
 
 
 # License
+
+``` 
 Copyright 2017 Catherine Chen (https://github.com/Catherine22)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -382,6 +415,8 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
+```
+
 
   [1]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/dex_1.png
   [2]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/dex_2.png
