@@ -5,7 +5,7 @@ This repository hosts examples of loading apks dynamical and in-depth documentat
 
 It's a very powerful technique to load apks from internal storage by ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
 
-4 steps to master this project
+## 4 steps to master this project
  1. Publisher your class loader apk.
  2. Upload the main apk to your server make sure that every one has installed class loader app could download it.
  3. Users install class loader apk.
@@ -14,11 +14,12 @@ It's a very powerful technique to load apks from internal storage by ClassLoader
 Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's a little like 'hotfix'.
 
 Therefore, you most create two projects, one loads classes and one includes logic.
-The main job of ClassLoader app is
+
+### The main job of ClassLoader app is
  - Download and varify the apk
  - Load the apk
 
-And what main apk does are
+### And what main apk does are
  1. Features you really use like chatting, taking photos, scanning QR codes, etc.
  2. Your user interface, logic, libraries... any bussiness your app providers.
 
@@ -65,16 +66,13 @@ In an Android device, it packages your classes into one (or more) dex file(s) wh
 
 Here are class loaders based on Android:
 
- - **BootClassLoader** 
-The top parent of the following classLoaders.
- - **PathClassLoader** 
-Load classes located in data/app/... where your app installed.
-Android uses this class for its system class loader and for its application class loader(s).
- - **DexClassLoader** 
-Load classes from .jar and .apk files containing a classes.dex entry. This can be used to execute code not installed as part of an application.
- - **URLClassLoader** 
-@hide
-This class loader is used to load classes and resources from a search path of URLs referring to both JAR files and directories. 
+|ClassLoader|Summary|
+|----|----|
+|BootClassLoader|The top parent of the following classLoaders.|
+|PathClassLoader|Load classes located in data/app/... where your app installed.<br>Android uses this class for its system class loader and for its application class loader(s).|
+|DexClassLoader|Load classes from .jar and .apk files containing a classes.dex entry. This can be used to execute code not installed as part of an application.|
+|URLClassLoader|@hide<br>This class loader is used to load classes and resources from a search path of URLs referring to both JAR files and directories. |
+
 
 First, let's focus on PathClassLoader and DexClassLoader.
 
