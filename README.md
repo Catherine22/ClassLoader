@@ -19,7 +19,7 @@ Therefore, you most create two projects, one loads classes and one includes logi
  - Download and varify the apk
  - Load the apk
 
-### And what main apk does are
+### And what the main apk does are
  1. Features you really use like chatting, taking photos, scanning QR codes, etc.
  2. Your user interface, logic, libraries... any bussiness your app providers.
 
