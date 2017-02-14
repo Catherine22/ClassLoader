@@ -1,8 +1,3 @@
----
-title: ClassLoader
-tags: ClassLoader, Dex, Android
-grammar_cjkRuby: true
----
 ClassLoader
 ===================
 
@@ -47,8 +42,11 @@ Android virtual machine load classes just like the way Java does, but there's a 
 ### What is dex
 In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading by Dalvik.
 ![enter description here][1]
+
 (screenshot from https://youtu.be/skmOBriQ28E)
+
 ![enter description here][2]
+
 (screenshot from https://youtu.be/skmOBriQ28E)
 
 ### Class loader
