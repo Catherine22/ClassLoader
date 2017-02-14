@@ -366,9 +366,22 @@ And then there's a workaround here that you must not use the same libraries in a
   
   [Android动态加载基础 ClassLoader工作机制]:<https://segmentfault.com/a/1190000004062880>  
   [Understanding and Experimenting with MultiDex]:<https://youtu.be/skmOBriQ28E>
-  
-  
 
+
+# License
+Copyright 2017 Catherine Chen (https://github.com/Catherine22)
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
 
   [1]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/dex_1.png
   [2]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/dex_2.png
