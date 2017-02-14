@@ -70,21 +70,21 @@ In PathClassLoader.class
 ```java
 public PathClassLoader(String dexPath, String libraryPath,
             ClassLoader parent) {
-        super(dexPath, null, libraryPath, parent);
-    }
+	super(dexPath, null, libraryPath, parent);
+}
 ```
 In DexClassLoader.class
 ```java
-    public DexClassLoader(String dexPath, String optimizedDirectory,
+public DexClassLoader(String dexPath, String optimizedDirectory,
             String libraryPath, ClassLoader parent) {
-        super(dexPath, new File(optimizedDirectory), libraryPath, parent);
-    }
+	super(dexPath, new File(optimizedDirectory), libraryPath, parent);
+}
 ```
 
 We found that the only one different between them is optimizedDirectory.
-optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it'll associated original optimized dex file. And DexClassLoader could cache what optimized dex file you need on internal storage.
+optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it'll associated original optimized dex file. And DexClassLoader could cache what optimize dex file you need on internal storage.
 
-And that's why we could load uninstalled-apk, dex and jar files by DexClassLoader.
+And that's why we could load apk, dex and jar files by DexClassLoader.
 
 Let's see what classLoader does
 ```java
