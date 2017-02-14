@@ -111,6 +111,8 @@ public class MyApplication extends Application {
 
 
         ClassLoader defaultCL = getClass().getClassLoader();
+        Log.d(TAG, "defaultCL:" + defaultCL.toString());
+        Log.d(TAG, "parent:" + defaultCL.getParent().toString());
         sm = new Smith<>(defaultCL);
         if (CLs.size() == 0)
             CLs.push(defaultCL);
@@ -120,7 +122,7 @@ public class MyApplication extends Application {
             if (parents.size() == 0)
                 parents.push(defaultP);
 
-            Object layerP = new ContainerClassLoader(this, dexPath, cc.getFilesDir().getAbsolutePath(),
+            Object layerP = new MyDexClassLoader(this, dexPath, cc.getFilesDir().getAbsolutePath(),
                     (ClassLoader) sm.get()); //4:the parent class loader
             if (!parents.peek().equals(layerP)) {
                 parents.push(layerP);
@@ -168,7 +170,7 @@ public class MyApplication extends Application {
         mTheme = mResources.newTheme();
         mTheme.applyStyle(android.R.style.Theme_Light_NoTitleBar_Fullscreen, true);
     }
-    
+
     public void createPath() {
         File file;
         if (getExternalFilesDir(null) != null) {

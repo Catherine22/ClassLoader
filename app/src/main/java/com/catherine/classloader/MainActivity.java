@@ -1,8 +1,10 @@
 package com.catherine.classloader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class MainActivity extends Activity implements View.OnClickListener {
+    private final static String TAG = "MainActivity";
     private TextView tv_console;
     private Button bt_load_apk1, bt_call_method, bt_launch_apk, bt_load_apk2;
 
@@ -24,7 +27,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         tv_console = (TextView) findViewById(R.id.tv_console);
         bt_load_apk1 = (Button) findViewById(R.id.bt_load_apk1);
         bt_load_apk1.setOnClickListener(this);
@@ -39,6 +42,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //download apk from your server and save it to Android/data/this app's package name/files/.
         //you can just put your apks into Android/data/this app's package name/files/.
         tv_console.setText("Download apk...\n");
+
+
+        printHowClassLoaderWorks();
+    }
+
+    private void printHowClassLoaderWorks() {
+        Log.i(TAG, "Load core java libraries by " + String.class.getClassLoader());
+        Log.i(TAG, "Load user-defined classes by " + MainActivity.class.getClassLoader());
+        Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
+        Log.i(TAG, "Default classLoader is " + getClassLoader());
+        Log.i(TAG, "Default system classLoader is \"" + ClassLoader.getSystemClassLoader());
     }
 
     @Override
@@ -153,7 +167,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             if (e instanceof ClassNotFoundException) {
                 history = tv_console.getText().toString();
-                tv_console.setText("Have you ever put your apk into correct dictionary?" + "\n----\n" + history);
+                tv_console.setText("Have you ever put your apk into correct directory?" + "\n----\n" + history);
             }
         }
     }
@@ -178,6 +192,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onDestroy();
         //Remove the latest loaded-apk
         ((MyApplication) getApplication()).RemoveApk();
-        Log.d("MainActivity", "onDestroy");
+        Log.d(TAG, "onDestroy");
     }
 }
