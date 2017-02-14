@@ -1,15 +1,26 @@
 ClassLoader
 ===================
 
-Loading apks from internal storage by this app (ClassLoader). You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded. All you have to do is fix bugs or add new features and package to an apk, then upload it to your host. As you launch this app, it downloads the apk you uploaded and load it. It's a little like 'hotfix'.
+This repository hosts examples of loading apks dynamical and in-depth documentation.
 
-So, the most important features of ClassLoader is
- 1. Download and varify the apk
- 2. Load the apk
+It's a very powerful technique to load apks from internal storage by ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
 
-And what apk does is
- 1. Features you really use like chatting, login, scanning QR Code, etc.
- 2. Your user interface, logic, libraries, etc.
+4 steps to master this project
+ 1. Publisher your class loader apk.
+ 2. Upload the main apk to your server make sure that every one has installed class loader app could download it.
+ 3. Users install class loader apk.
+ 4. Users open classLoader app to download the main apk which includes logic of what your app really do, and load it.
+ 
+Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's a little like 'hotfix'.
+
+Therefore, you most create two projects, one loads classes and one includes logic.
+The main job of ClassLoader app is
+ - Download and varify the apk
+ - Load the apk
+
+And what main apk does are
+ 1. Features you really use like chatting, taking photos, scanning QR codes, etc.
+ 2. Your user interface, logic, libraries... any bussiness your app providers.
 
 In this project, I use this app to load [Resource1.apk] and [Resource2.apk].
 # Features
@@ -41,6 +52,7 @@ Android virtual machine load classes just like the way Java does, but there's a 
 
 ### What is dex
 In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading by Dalvik.
+
 ![enter description here][1]
 
 (screenshot from https://youtu.be/skmOBriQ28E)
@@ -54,7 +66,7 @@ In an Android device, it packages your classes into one (or more) dex file(s) wh
 Here are class loaders based on Android:
 
  - **BootClassLoader** 
-The parent of the following classLoaders.
+The top parent of the following classLoaders.
  - **PathClassLoader** 
 Load classes located in data/app/... where your app installed.
 Android uses this class for its system class loader and for its application class loader(s).
@@ -82,11 +94,12 @@ public DexClassLoader(String dexPath, String optimizedDirectory,
 ```
 
 We found that the only one different between them is optimizedDirectory.
-optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it'll associated original optimized dex file. And DexClassLoader could cache what optimize dex file you need on internal storage.
+optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put on internal storage.
 
-And that's why we could load apk, dex and jar files by DexClassLoader.
+That's why we can declare what apk, dex and jar files would be loaded by DexClassLoader.
 
-Let's see what classLoader does
+
+Then let's see what ClassLoader does
 ```java
 package java.lang;
 public abstract class ClassLoader {
@@ -125,15 +138,14 @@ public abstract class ClassLoader {
     }
 }
 ```
+
 We realized that there're three steps to load a class. 
 First, check if the class has already been loaded, then
 ```java
 findLoadedClass(name);
 ```
 
-And now, you can easily figure out that once a class has been loaded, it'll never be load again. 
-
-Not found, we check if the class has already been loaded by the parent class loader.
+Next, if the class was not found, we check if the class has already been loaded by the parent class loader.
 ```java
 if (parent != null) {
     c = parent.loadClass(name, false);
@@ -145,6 +157,9 @@ Still not found, so we start to load the class by ourselves.
 ```java
 findClass(name);
 ```
+
+And now, you can easily figure out that once a class has been loaded, it'll never be load again. 
+An
 
 ## About this project
 
