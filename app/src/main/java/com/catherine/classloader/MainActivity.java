@@ -137,14 +137,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
+
+                    String history = tv_console.getText().toString();
+                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.bt_launch_apk:
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, apkActivity);
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, apkActivity);
+                    startActivity(intent);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+
+                    String history = tv_console.getText().toString();
+                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
+                }
                 break;
         }
     }
