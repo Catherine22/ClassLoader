@@ -18,7 +18,12 @@
         </activity>
 
         <activity android:name="com.catherine.resource1.MainActivity" />
-        <activity android:name="com.catherine.resource2.MainActivity" />
+        <activity
+            android:name="com.catherine.resource2.MainActivity"
+            android:process=":resource2" />
+        <activity
+            android:name=".OpenResourceActivity"
+            android:process=":resource2" />
     </application>
 
 </manifest>
