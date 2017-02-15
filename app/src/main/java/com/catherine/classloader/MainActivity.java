@@ -1,15 +1,16 @@
 package com.catherine.classloader;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         tv_console = (TextView) findViewById(R.id.tv_console);
         bt_load_apk1 = (Button) findViewById(R.id.bt_load_apk1);
         bt_load_apk1.setOnClickListener(this);
@@ -50,9 +51,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void printHowClassLoaderWorks() {
         Log.i(TAG, "Load core java libraries by " + String.class.getClassLoader());
         Log.i(TAG, "Load user-defined classes by " + MainActivity.class.getClassLoader());
-        Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
+//        Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
         Log.i(TAG, "Default classLoader is " + getClassLoader());
-        Log.i(TAG, "Default system classLoader is \"" + ClassLoader.getSystemClassLoader());
+        Log.i(TAG, "Default system classLoader is " + ClassLoader.getSystemClassLoader());
+
+        if (getClassLoader() == ClassLoader.getSystemClassLoader())
+            Log.d(TAG, "Default class loader is equal to default system class loader.");
+        else
+            Log.e(TAG, "Default class loader is NOT equal to default system class loader.");
     }
 
     @Override
@@ -156,12 +162,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (MyConfig.apk1.equals(fileName)) {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK1_ACTIVITY_MAIN);
                 apkUtils = getClassLoader().loadClass(MyConfig.APK1_UTILS);
+
+                Log.d(TAG, "Load the class of the apk by " + apkActivity.getClassLoader());
+
             } else if (MyConfig.apk2.equals(fileName)) {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK2_ACTIVITY_MAIN);
                 apkUtils = getClassLoader().loadClass(MyConfig.APK2_UTILS);
             }
             history = tv_console.getText().toString();
-            tv_console.setText("Done!" + "\n----\n" + history);
+            tv_console.setText(getApkInfo(fileName) + "\n----\n" + "Done!" + "\n----\n" + history);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -193,5 +202,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //Remove the latest loaded-apk
         ((MyApplication) getApplication()).RemoveApk();
         Log.d(TAG, "onDestroy");
+    }
+
+    public String getApkInfo(String fileName) {
+        try {
+            String dexPath = null;
+            if (getExternalFilesDir(null) != null) {
+                dexPath = new File(getExternalFilesDir(null), fileName).getAbsolutePath();
+            } else if (getFilesDir() != null) {
+                dexPath = new File(getFilesDir(), fileName).getAbsolutePath();
+            }
+
+            PackageManager pm = getPackageManager();
+            PackageInfo info = pm.getPackageArchiveInfo(dexPath, 0);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n*** Apk info ***\n");
+            sb.append("versionCode:" + info.versionCode);
+            sb.append("\nversionName:" + info.versionName);
+            sb.append("\n*** Apk info ***\n");
+
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
     }
 }
