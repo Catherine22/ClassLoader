@@ -10,7 +10,7 @@ It's a very powerful technique to load apks from internal storage by ClassLoader
  2. Upload the main apk to your server make sure that every one has installed class loader app could download it.
  3. Users install class loader apk.
  4. Users open classLoader app to download the main apk which includes logic of what your app really do, and load it.
- 
+
 Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's a little like 'hotfix'.
 
 Therefore, you most create two projects, one loads classes and one includes logic.
@@ -104,7 +104,7 @@ public abstract class ClassLoader {
     public Class<?> loadClass(String name) throws ClassNotFoundException {
         return loadClass(name, false);
     }
-    
+
     protected Class<?> loadClass(String name, boolean resolve)
         throws ClassNotFoundException
     {
@@ -137,7 +137,7 @@ public abstract class ClassLoader {
 }
 ```
 
-We realized that there're three steps to load a class. 
+We realized that there're three steps to load a class.
 First, check if the class has already been loaded, then
 ```java
 findLoadedClass(name);
@@ -156,7 +156,7 @@ Still not found, so we start to load the class by ourselves.
 findClass(name);
 ```
 
-And now, you can easily figure out that once a class has been loaded, it'll never be load again. 
+And now, you can easily figure out that once a class has been loaded, it'll never be load again.
 
 
 ## Scenarios
@@ -167,7 +167,7 @@ Let's play with some scenarios of class loaders.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-		
+
         Log.i(TAG, "Load core java libraries by " + String.class.getClassLoader());
         Log.i(TAG, "Load user-defined classes by " + MainActivity.class.getClassLoader());
         Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
@@ -186,7 +186,7 @@ We got
 
   - Both user-defined classes and libraries are loaded by PathClassLoader.
   - Core java libraries like java.lang.String are loaded by BootClassLoader. So you can't create a String class and replace java.lang.String, even though they've got the same package name and class name. **Android believes that they are totally different classes because they are from different class loaders.**
-  
+
 
 ## About this project
 
@@ -320,7 +320,7 @@ try {
 ```
 
  - Or maybe you don't want to use any methods or fields, you just launch the activity
- 
+
 ``` java
 try {
 	Class<?>  apkActivity = getClassLoader().loadClass("com.catherine.resource1.MainActivity");
@@ -335,24 +335,24 @@ try {
 # Warning
 
 #### 1. Android Studio Settings
- 
+
  Disabled Instant Run when running classLoader application
  ![enter description here][3]
- 
+
 #### 2. Apks path
- 
+
  Resources path: Android/data/package/files/xxx.apk
- 
+
 #### 3. Multidex
- 
+
  In build.gradle, disable multidex.
- 
+
 ``` gradle
 multiDexEnabled false
 ```
 
 #### 4. Manifest
- 
+
 **Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And remember that you most prefix your activity name with its package.
 
 E.g.
@@ -362,9 +362,9 @@ E.g.
 ```
 
 #### 5. View
- 
+
 In your apk, you can't just get the view by setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
- 
+
 E.g.
 
 Illegal
@@ -377,23 +377,30 @@ Legal
 setContentView(View.inflate(getApplicationContext(), R.layout.activity_main, null));
 ```
 
-# Issues
-**It'll be fine if you just load an apk.
-But if you try to load multi-apks, there still are some problems I haven't fixed.**
+# Loading more than one apk
+There's a scenario.
+Assuming you imported the support-v4 library both apk1 and apk2, and you load apk1 first, then you are going to load apk2.
+All of a sudden, your ClassLoader app crashes or some resource errors happens. Here's a solution, we make apk2 run on another process so that we can perfectly release loaded resources, and we also make sure that there're only resources of an single apk while the application is running.
 
-If there're some libraries like support-v4, zxing, whatever, you imported these libraries to some of the apks (in this case, it means  both resource1.apk and resource2.apk). And when you call methods or launch activities that are included the same libraries, it'll crash because resources're not found.
 
-And then there's a workaround here that you must not use the same libraries in any apks you wanna load or you just load a single apk.
+``` java
+@Override
+protected void onDestroy() {
+    Process.killProcess(Process.myPid());
+    super.onDestroy();
+}
+```
+
 
 # Reference
  - [Android动态加载基础 ClassLoader工作机制]
  - [Understanding and Experimenting with MultiDex]
  - [Android ClassLoader机制]
- 
+
 
   [Resource1.apk]:<https://github.com/Catherine22/Resource1>
   [Resource2.apk]:<https://github.com/Catherine22/Resource2>
-  
+
   [Android动态加载基础 ClassLoader工作机制]:<https://segmentfault.com/a/1190000004062880>  
   [Understanding and Experimenting with MultiDex]:<https://youtu.be/skmOBriQ28E>
   [Android ClassLoader机制]:<http://blog.csdn.net/mr_liabill/article/details/50497055>
@@ -401,7 +408,7 @@ And then there's a workaround here that you must not use the same libraries in a
 
 # License
 
-``` 
+```
 Copyright 2017 Catherine Chen (https://github.com/Catherine22)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not

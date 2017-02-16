@@ -1,6 +1,7 @@
 package com.catherine.classloader;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import java.net.URL;
@@ -23,10 +24,9 @@ public class MyDexClassLoader extends DexClassLoader {
     private static final String TAG = "MyDexClassLoader";
 
     /**
-     *
      * @param application MyApplication
-     * @param dexPath String: the list of jar/apk files containing classes and resources, delimited by File.pathSeparator, which defaults to ":" on Android
-     * @param soPath native libraries (path of .so files)
+     * @param dexPath     String: the list of jar/apk files containing classes and resources, delimited by File.pathSeparator, which defaults to ":" on Android
+     * @param soPath      native libraries (path of .so files)
      * @param classloader the parent class loader
      */
     public MyDexClassLoader(MyApplication application, String dexPath, String soPath, ClassLoader classloader) {
@@ -72,13 +72,13 @@ public class MyDexClassLoader extends DexClassLoader {
     }
 
     @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
+    public Class<?> loadClass(String name) throws ClassNotFoundException{
         Log.d(TAG, "loadClass:" + name);
         return super.loadClass(name);
     }
 
     @Override
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException{
         Log.d(TAG, "loadClass:" + name + " : " + resolve);
         return super.loadClass(name, resolve);
     }
