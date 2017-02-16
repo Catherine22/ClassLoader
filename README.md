@@ -377,10 +377,10 @@ Legal
 setContentView(View.inflate(getApplicationContext(), R.layout.activity_main, null));
 ```
 
-# Loading more than one apk
+#### 6. Loading more than one apk
 There's a scenario.
 Assuming you imported the support-v4 library both apk1 and apk2, and you load apk1 first, then you are going to load apk2.
-All of a sudden, your ClassLoader app crashes or some resource errors happens. Here's a solution, we make apk2 run on another process so that we can perfectly release loaded resources, and we also make sure that there're only resources of an single apk while the application is running.
+All of a sudden, your ClassLoader app crashes or some resource errors happens. Here's a solution, we make apk2 run on another process so that we can perfectly release loaded resources, and we also make sure that there're only resources of a single apk while the application is running.
 
 
 ``` java
