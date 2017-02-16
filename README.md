@@ -3,7 +3,7 @@ ClassLoader
 
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
-It's a very powerful technique to load apks from internal storage by ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
+It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
 
 ## 4 steps to master this project
  1. Publisher your class loader apk.
@@ -52,7 +52,7 @@ Also, you could create your own class loaders, which is called 'User-defined cla
 Android virtual machine load classes just like the way Java does, but there's a slightly different.
 
 ### What is dex
-In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading by Dalvik.
+In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading with Dalvik.
 
 ![enter description here][1]
 
@@ -94,7 +94,7 @@ public DexClassLoader(String dexPath, String optimizedDirectory,
 We found that the only one different between them is optimizedDirectory.
 optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put on internal storage.
 
-That's why we can declare what apk, dex and jar files would be loaded by DexClassLoader.
+That's why we can declare what apk, dex and jar files would be loaded with DexClassLoader.
 
 
 Then let's see what ClassLoader does
@@ -143,7 +143,7 @@ First, check if the class has already been loaded, then
 findLoadedClass(name);
 ```
 
-Next, if the class was not found, we check if the class has already been loaded by the parent class loader.
+Next, if the class was not found, we check if the class has already been loaded with the parent.
 ```java
 if (parent != null) {
     c = parent.loadClass(name, false);
@@ -151,7 +151,7 @@ if (parent != null) {
     c = findBootstrapClassOrNull(name);
 }
 ```
-Still not found, so we start to load the class by ourselves.
+Still not found, so we start to load the class ourselves.
 ```java
 findClass(name);
 ```
@@ -168,9 +168,9 @@ Let's play with some scenarios of class loaders.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "Load core java libraries by " + String.class.getClassLoader());
-        Log.i(TAG, "Load user-defined classes by " + MainActivity.class.getClassLoader());
-        Log.i(TAG, "Load user-defined libraries by " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
+        Log.i(TAG, "Load core java libraries with " + String.class.getClassLoader());
+        Log.i(TAG, "Load user-defined classes with " + MainActivity.class.getClassLoader());
+        Log.i(TAG, "Load user-defined libraries with " + AppCompatActivity.class.getClassLoader());//what you imported from gradle or libs/
         Log.i(TAG, "Default classLoader is " + getClassLoader());
         Log.i(TAG, "Default system classLoader is \"" + ClassLoader.getSystemClassLoader());
 }
@@ -184,14 +184,14 @@ We got
 |PathClassLoader[[DexPathList[[directory...|  MainActivity.class.getClassLoader()<br>AppCompatActivity.class.getClassLoader()<br>ClassLoader.getSystemClassLoader() |
 |PathClassLoader[DexPathList[[zip file...|getClassLoader()|
 
-  - Both user-defined classes and libraries are loaded by PathClassLoader.
-  - Core java libraries like java.lang.String are loaded by BootClassLoader. So you can't create a String class and replace java.lang.String, even though they've got the same package name and class name. **Android believes that they are totally different classes because they are from different class loaders.**
+  - Both user-defined classes and libraries are loaded with PathClassLoader.
+  - Core java libraries like java.lang.String are loaded with BootClassLoader. So you can't create a String class and replace java.lang.String, even though they've got the same package name and class name. **Android believes that they are totally different classes because they are from different class loaders.**
 
 
 ## About this project
 
   - This application is used to load classes from another apk, you can launch activities or call methods from another apk, so we don't put logic in this app.
-  - Using getClassLoader().loadClass() to get activities from an apk, and calling methods or fields by Java reflection.
+  - Using getClassLoader().loadClass() to get activities from an apk, and calling methods or fields with Java reflection.
 
 Here're some reflection examples:
 
@@ -363,7 +363,7 @@ E.g.
 
 #### 5. View
 
-In your apk, you can't just get the view by setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
+In your apk, you can't just get the view with setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
 
 E.g.
 
