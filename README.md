@@ -49,7 +49,7 @@ Also, you could create your own class loaders, which is called 'User-defined cla
 
 ## Android class loader
 
-Android virtual machine load classes just like the way Java does, but there's a slightly different.
+Android virtual machine load classes just like the way Java does, but it's slightly different.
 
 ### What is dex
 In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading with Dalvik.
