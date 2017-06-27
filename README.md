@@ -332,7 +332,7 @@ try {
 }
 ```
 
-# Warning
+# Warnings
 
 #### 1. Android Studio Settings
 
