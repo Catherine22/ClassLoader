@@ -3,7 +3,7 @@ ClassLoader
 
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
-It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling because you do everything in your apk which is dynamically loaded.
+It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling because everything would be done by your application is dynamically loaded.
 
 ## 4 steps to master this project
  1. Publisher your class loader apk.
@@ -16,27 +16,28 @@ Assume that you fixed bugs and you are going to update your app, all you have to
 Therefore, you most create two projects, one loads classes and one includes logic.
 
 ### The main job of ClassLoader app is
- - Download and varify the apk
- - Load the apk
+ - Download and varify the main apk
+ - Load the main apk
 
 ### And what the main apk does are
- -  Features you really use like chatting, taking photos, scanning QR codes, etc.
- -  Your user interface, logic, libraries... any bussiness your app providers.
+ -  Features like chatting, taking photos, scanning QR codes, etc.
+ -  User interfaces, classes, libraries... any bussiness your app providers.
 
-In this project, I use this app to load [Resource1.apk] and [Resource2.apk].
+In this project, I use this ClassLoader app to load [Resource1.apk] and [Resource2.apk].
+
 # Features
 
- 1. Load codes from another Apk, including classes, jars, etc.
- 2. You put your logic to an apk, all you have to do is download  this apk and loading it.
+ 1. Load classes or resources from other apks or jars.
+ 2. Package all the functions you create to an apk, all you have to do is download this apk and loading it.
  3. Shrink your app and hide your codes.
  4. Automatic updates
- 5. Switch apk, it means that you can load more than an apk. But in general, I think you just need to package all of your logic into an apk and loading an apk is fair enough.
+ 5. Switch apk, it means that you can load more than an apk. But in general, I think you just need to package all of your codes into an apk and it's probably quite enough to load classes or resources in a single apk.
 
 # Illustration
 
 ## Java class loader
 
-There are three class loader are used then JVM started:
+There are three classLoaders would be used when JVM started:
 
  1. Bootstrap class loader
 Loading classes in <JAVA_HOME>/jre/lib directory
@@ -45,11 +46,11 @@ Loading classes in <JAVA_HOME>/jre/lib/ext directory
  3. System class loader
 Loading classes in system class path (which is the same as the CLASSPATH environment variable).
 
-Also, you could create your own class loaders, which is called 'User-defined class loaders'.
+Also, you could define your own class loaders, which is called 'User-defined class loaders'.
 
 ## Android class loader
 
-Android virtual machine load classes just like the way Java does, but it's slightly different.
+Android virtual machine loads classes just like the way Java does, but it's slightly different.
 
 ### What is dex
 In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading with Dalvik.
