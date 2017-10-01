@@ -3,25 +3,25 @@ ClassLoader
 
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
-It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling because everything would be done by your application is dynamically loaded.
+It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling. Developers fix bugs, add new features and package to an apk (I call it main apk), upload to your server. The only thing your application has to do is download the latest main apk and load to your application.
 
 ## 4 steps to master this project
  1. Publisher your class loader apk.
- 2. Upload the main apk to your server make sure that every one has installed class loader app could download it.
+ 2. Upload the main apk to your server, only users who have installed class loader app can download it.
  3. Users install class loader apk.
- 4. Users open classLoader app to download the main apk which includes logic of what your app really do, and load it.
+ 4. Users open classLoader app to download the main apk which includes features of what your app really do and load it to class loader app.
 
-Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's a little like 'hotfix'.
+Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's kind of like 'hotfix'.
 
-Therefore, you most create two projects, one loads classes and one includes logic.
+Therefore, you most create two projects, one loads classes and another includes features and layouts.
 
 ### The main job of ClassLoader app is
- - Download and varify the main apk
+ - Download and validate the main apk
  - Load the main apk
 
-### And what the main apk does are
- -  Features like chatting, taking photos, scanning QR codes, etc.
- -  User interfaces, classes, libraries... any bussiness your app providers.
+### And what the main apk does is
+ -  Features like chatting, taking photos, scanning QR codes, login or anything.
+ -  Layouts, classes, libraries... any businesses your app provides.
 
 In this project, I use this ClassLoader app to load [Resource1.apk] and [Resource2.apk].
 
@@ -93,9 +93,9 @@ public DexClassLoader(String dexPath, String optimizedDirectory,
 ```
 
 We found that the only one different between them is optimizedDirectory.
-optimizedDirectory is a directory where optimized dex files should be written, so while it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put on internal storage.
+optimizedDirectory is a directory where optimizes dex files would be written, so while it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put in internal storage.
 
-That's why we can declare what apk, dex and jar files would be loaded with DexClassLoader.
+That's why we can assign DexClassLoader to load the user-defined apk, dex and jar files.
 
 
 Then let's see what ClassLoader does
@@ -139,12 +139,12 @@ public abstract class ClassLoader {
 ```
 
 We realized that there're three steps to load a class.
-First, check if the class has already been loaded, then
+First, check if the class has already been loaded,
 ```java
 findLoadedClass(name);
 ```
 
-Next, if the class was not found, we check if the class has already been loaded with the parent.
+Next, if the class is not found, we check if the class has already been loaded with the parent.
 ```java
 if (parent != null) {
     c = parent.loadClass(name, false);
@@ -157,7 +157,7 @@ Still not found, so we start to load the class ourselves.
 findClass(name);
 ```
 
-And now, you can easily figure out that once a class has been loaded, it'll never be load again.
+By now, you can easily figure out that once a class has been loaded, it'll never be load again.
 
 
 ## Scenarios
@@ -177,7 +177,7 @@ Let's play with some scenarios of class loaders.
 }
 ```
 
-We got
+We know
 
 |Class Loader|Methods|
 |----|----|
@@ -191,13 +191,13 @@ We got
 
 ## About this project
 
-  - This application is used to load classes from another apk, you can launch activities or call methods from another apk, so we don't put logic in this app.
-  - Using getClassLoader().loadClass() to get activities from an apk, and calling methods or fields with Java reflection.
+  - This application is used to load classes from another apk, you can launch activities or call methods from that apk. That's why there is nothing but updating and loading apks in this app.
+  - Use getClassLoader().loadClass() to get activities from an apk, and call methods or fields with Java reflection.
 
 Here're some reflection examples:
 
 
-Let's say Utils is what class you want to reflect, your class looks like...
+Let's say Utils is what class you are going to use, your class looks like...
 ``` java
 package com.catherine.resource1;
 
@@ -230,8 +230,8 @@ public class Utils {
 }
 ```
 
-And now you want to call methods of Utils. But you can't find Utils in your project, so you can't just import it like any other classes in your project.
-So here we use reflection to resolve the problem.
+You want to call some methods of Utils. Unfortunately you can't find that Utils in your project (ClassLoader app), so you can't just import it like any other classes in your project.
+So here we use reflection to resolve this issue.
 
  - First, find the class
 
@@ -354,7 +354,7 @@ multiDexEnabled false
 
 #### 4. Manifest
 
-**Add all of the permissions, activities and whatever you've added in your apk's manifest to this app (your classLoader) 's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And remember that you most prefix your activity name with its package.
+**Add all of the permission, activities and whatever you've added in your main apk's manifest to this app (your classLoader)'s manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And don't forget to add the prefix of your activity name with its package.
 
 E.g.
 ```xml
@@ -364,16 +364,16 @@ E.g.
 
 #### 5. View
 
-In your apk, you can't just get the view with setContentView(@LayoutRes int layoutResID), it can't find your resources. You most use View.inflate() to find resources.
+In your main apk, you can't just get the view with setContentView(@LayoutRes int layoutResID). Your class loader app can't find your resources with that method. You most use View.inflate() to find resources.
 
 E.g.
 
-Illegal
+Do not use this:
 ``` java
 setContentView(R.layout.activity_main);
 ```
 
-Legal
+Instead, replace it with:
 ``` java
 setContentView(View.inflate(getApplicationContext(), R.layout.activity_main, null));
 ```
