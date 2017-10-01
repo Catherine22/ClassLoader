@@ -3,7 +3,7 @@ ClassLoader
 
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
-It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling. Developers fix bugs, add new features and package to an apk (I call it main apk), upload to your server. The only thing your application has to do is download the latest main apk and load to your application.
+It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling. Developers fix bugs, add new features and package to an apk (I call it main apk), upload to your server. The only thing your application has to do is download the latest main apk and load it to your application.
 
 ## 4 steps to master this project
  1. Publisher your class loader apk.
