@@ -3,17 +3,20 @@ ClassLoader
 
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
-It's a very powerful technique to load apks from internal storage with ClassLoader. You can automatically update your app without reinstalling. Developers fix bugs, add new features and package to an apk (I call it main apk), upload to your server. The only thing your application has to do is download the latest main apk and load it to your application.
+It's a very powerful technique which loads apks from internal storage with ClassLoader. Users can automatically update their application without reinstalling. Once developers fix any bug or update new features, they are supposed to repackage codes to an apk (I call it main apk) and upload to their server. The workflow would be:
+1. Check the latest version while launching the application with resonable valifacation
+2. Download the latest apk (main apk).
+3. Load codes (That is what this demonstration does)
 
 ## 4 steps to master this project
  1. Publisher your class loader apk.
- 2. Upload the main apk to your server, only users who have installed class loader app can download it.
- 3. Users install class loader apk.
- 4. Users open classLoader app to download the main apk which includes features of what your app really do and load it to class loader app.
+ 2. Upload the main apk to your server, only users who have installed ClassLoader app can download it.
+ 3. Users install ClassLoader apk.
+ 4. Users open ClassLoader app to download the main apk which includes features of what your app really do and load it to ClassLoader app.
 
-Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Then, as users launch class loader app, it's going to download the latest apk you just uploaded and load it to class loader app. It's kind of like 'hotfix'.
+Assume that you fixed bugs and you are going to update your app, all you have to do is step2. Codes will be update while users launch ClassLoader app (step 4). It's kind of like 'hotfix'.
 
-Therefore, you most create two projects, one loads classes and another includes features and layouts.
+Therefore, you most create two projects, ClassLoader and main apk which combines features and layouts.
 
 ### The main job of ClassLoader app is
  - Download and validate the main apk
@@ -40,17 +43,17 @@ In this project, I use this ClassLoader app to load [Resource1.apk] and [Resourc
 There are three classLoaders would be used when JVM started:
 
  1. Bootstrap class loader
-Loading classes in <JAVA_HOME>/jre/lib directory
+Loading classes from <JAVA_HOME>/jre/lib directory
  2. Extension class loader
-Loading classes in <JAVA_HOME>/jre/lib/ext directory
+Loading classes from <JAVA_HOME>/jre/lib/ext directory
  3. System class loader
-Loading classes in system class path (which is the same as the CLASSPATH environment variable).
+Loading classes from system class path (which is the same as the CLASSPATH environment variable).
 
-Also, you could define your own class loaders, which is called 'User-defined class loaders'.
+Besides, you could define your own class loaders, which is 'User-defined class loaders'.
 
 ## Android class loader
 
-Android virtual machine loads classes just like the way Java does, but it's slightly different.
+Android virtual machine loads classes just like the way Java does, but they're slightly different.
 
 ### What is dex
 In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading with Dalvik.
@@ -70,15 +73,16 @@ Here are class loaders based on Android:
 |Class Loader|Summary|
 |----|----|
 |BootClassLoader|The top parent of the following classLoaders.|
-|PathClassLoader|Load classes located in data/app/... where your app installed.<br>Android uses this class for its system class loader and for its application class loader(s).|
+|PathClassLoader|Load classes located in data/app/... where your app installed.<br>Android uses this class for its system class loader and its application class loader(s).|
 |DexClassLoader|Load classes from .jar and .apk files containing a classes.dex entry. This can be used to execute code not installed as part of an application.|
 |URLClassLoader|@hide<br>This class loader is used to load classes and resources from a search path of URLs referring to both JAR files and directories. |
 
 
-First, let's focus on PathClassLoader and DexClassLoader.
+First, let's focus on PathClassLoader and DexClassLoader. Both of them extend BaseDexClassLoader.
 
 In PathClassLoader.class
 ```java
+// set optimizedDirectory as null means to use the default system directory for same
 public PathClassLoader(String dexPath, String libraryPath,
             ClassLoader parent) {
 	super(dexPath, null, libraryPath, parent);
@@ -92,10 +96,10 @@ public DexClassLoader(String dexPath, String optimizedDirectory,
 }
 ```
 
-We found that the only one different between them is optimizedDirectory.
-optimizedDirectory is a directory where optimizes dex files would be written, so while it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put in internal storage.
+We found that optimizedDirectory is the only one difference between them.
+optimizedDirectory is a directory where optimizes dex files would be written. While it's null in PathClassLoader, it associates original optimized dex file. And DexClassLoader could cache any optimize dex files you put in internal storage.
 
-That's why we can assign DexClassLoader to load the user-defined apk, dex and jar files.
+That's why we can assign DexClassLoader to load the user-defined apk, dex and jar files. PathClassLoader, however, loads the installed Apk.
 
 
 Then let's see what ClassLoader does
@@ -342,7 +346,7 @@ try {
 
 #### 2. Apks path
 
- Resources path: Android/data/package/files/xxx.apk
+ Resources path: Android/data/package/files/xxx.apk   
 
 #### 3. Multidex
 
@@ -354,7 +358,7 @@ multiDexEnabled false
 
 #### 4. Manifest
 
-**Add all of the permission, activities and whatever you've added in your main apk's manifest to this app (your classLoader)'s manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And don't forget to add the prefix of your activity name with its package.
+**Add all of the permission, activities and whatever you've added in your main apk's manifest to ClassLoader app's manifest file**. And android studio probably figures out some errors likes 'Unresolved package...', just ignore them. And don't forget to add the prefix of your activity name with its package.
 
 E.g.
 ```xml
@@ -364,7 +368,7 @@ E.g.
 
 #### 5. View
 
-In your main apk, you can't just get the view with setContentView(@LayoutRes int layoutResID). Your class loader app can't find your resources with that method. You most use View.inflate() to find resources.
+In your main apk, you can't just get the view with setContentView(@LayoutRes int layoutResID). Your ClassLoader app can't find your resources with that method. You most use View.inflate() to find resources. Because applications access resources via the instance of Resource, new loaded resources are not found in the original Resource object.
 
 E.g.
 
