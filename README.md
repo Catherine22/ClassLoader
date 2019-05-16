@@ -4,7 +4,7 @@ ClassLoader
 This repository hosts an example of dynamically loading an apk and in-depth documentation.
 
 It's a very powerful technique which loads apks from internal storage with ClassLoader. Users can automatically update their application without reinstalling. Once developers fix any bug or update new features, they are supposed to repackage codes to an apk (I call it main apk) and upload to their server. The workflow would be:
-1. Check the latest version while launching the application with resonable valifacation
+1. Check the latest version while launching the application with reasonable validation
 2. Download the latest apk (main apk).
 3. Load codes (That is what this demonstration does)
 
@@ -403,8 +403,8 @@ protected void onDestroy() {
  - [Android ClassLoader机制]
 
 
-  [Resource1.apk]:<https://github.com/Catherine22/Resource1>
-  [Resource2.apk]:<https://github.com/Catherine22/Resource2>
+  [Resource1.apk]:<https://github.com/Catherine22/ClassLoader/tree/master/Resource1>
+  [Resource2.apk]:<https://github.com/Catherine22/ClassLoader/tree/master/Resource2>
 
   [Android动态加载基础 ClassLoader工作机制]:<https://segmentfault.com/a/1190000004062880>  
   [Understanding and Experimenting with MultiDex]:<https://youtu.be/skmOBriQ28E>
