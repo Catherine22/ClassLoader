@@ -438,6 +438,6 @@ the License.
 [3]: https://raw.githubusercontent.com/Catherine22/ClassLoader/master/instant_run.png
 [resource1.apk]: https://github.com/Catherine22/ClassLoader/tree/master/Resource1
 [resource2.apk]: https://github.com/Catherine22/ClassLoader/tree/master/Resource2
-[android动态加载基础 classloader工作机制]: https://segmentfault.com/a/1190000004062880
+[android 动态加载基础 classloader 工作机制]: https://segmentfault.com/a/1190000004062880
 [understanding and experimenting with multidex]: https://youtu.be/skmOBriQ28E
-[android classloader机制]: http://blog.csdn.net/mr_liabill/article/details/50497055
+[android classloader 机制]: http://blog.csdn.net/mr_liabill/article/details/50497055
