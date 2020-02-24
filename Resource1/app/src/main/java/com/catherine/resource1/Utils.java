@@ -17,7 +17,7 @@ public class Utils {
     }
 
     public static String getStringValueStatic() {
-        return "(static) Hello, I'm apk1";
+        return "(static) Hello from APK1";
     }
 
     public static int getIntValueStatic() {
@@ -25,7 +25,7 @@ public class Utils {
     }
 
     public String getStringValue() {
-        return "Hello, I'm apk1";
+        return "Hello from APK1";
     }
 
     public int getIntValue() {

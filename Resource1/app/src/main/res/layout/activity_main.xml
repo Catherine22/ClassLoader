@@ -15,5 +15,5 @@
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello! I'm Apk1" />
+        android:text="Hello from Apk1" />
 </RelativeLayout>

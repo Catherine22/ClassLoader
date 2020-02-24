@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bt_load_apk2.setOnClickListener(this);
 
 
-        //Download apk from your server and save it to Android/data/this app's package name/files/.
+        //Download APK from your server and save it to Android/data/this app's package name/files/.
         //you can just put your apks into Android/data/this app's package name/files/.
         tv_console.setText("Download apk...\n");
 
@@ -83,7 +83,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     //set null as the first parameter of invoke() while invoking a static method.
                     //static String getInputStringStatic(String value)
                     Method getInputStringStatic = apkUtils.getDeclaredMethod("getInputStringStatic", String.class);
-                    String returns1 = (String) getInputStringStatic.invoke(null, "Hello, I'm your classLoader");
+                    String returns1 = (String) getInputStringStatic.invoke(null, "Hello from your classLoader");
                     String history = tv_console.getText().toString();
                     tv_console.setText("getInputStringStatic:\t" + returns1 + "\n----\n" + history);
 
@@ -145,7 +145,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
 
                     String history = tv_console.getText().toString();
-                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
+                    tv_console.setText("Load any APK first." + "\n----\n" + history);
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
                 }
@@ -159,7 +159,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
 
                     String history = tv_console.getText().toString();
-                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
+                    tv_console.setText("Load any APK first." + "\n----\n" + history);
                 }
                 break;
         }
@@ -179,7 +179,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK1_ACTIVITY_MAIN);
                 apkUtils = getClassLoader().loadClass(MyConfig.APK1_UTILS);
 
-                Log.d(TAG, "Load the class of the apk by " + apkActivity.getClassLoader());
+                Log.d(TAG, "Load the class of the APK by " + apkActivity.getClassLoader());
 
             } else if (MyConfig.apk2.equals(fileName)) {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK2_ACTIVITY_MAIN);
@@ -193,7 +193,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (e instanceof ClassNotFoundException) {
                 history = tv_console.getText().toString();
                 String path = String.format("Android/data/%s/files/xxx.apk", getPackageName());
-                tv_console.setText("Have you ever put your apk into correct directory?\n" + path + "\n----\n" + history);
+                tv_console.setText("Have you ever put your APK into correct directory?\n" + path + "\n----\n" + history);
             }
         }
     }

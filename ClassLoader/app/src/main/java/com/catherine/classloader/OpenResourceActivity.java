@@ -66,7 +66,7 @@ public class OpenResourceActivity extends Activity implements View.OnClickListen
                 apkActivity = getClassLoader().loadClass(MyConfig.APK1_ACTIVITY_MAIN);
                 apkUtils = getClassLoader().loadClass(MyConfig.APK1_UTILS);
 
-                Log.d(TAG, "Load the class of the apk by " + apkActivity.getClassLoader());
+                Log.d(TAG, "Load the class of the APK by " + apkActivity.getClassLoader());
 
             } else if (MyConfig.apk2.equals(fileName)) {
                 apkActivity = getClassLoader().loadClass(MyConfig.APK2_ACTIVITY_MAIN);
@@ -79,7 +79,7 @@ public class OpenResourceActivity extends Activity implements View.OnClickListen
 
             if (e instanceof ClassNotFoundException) {
                 history = tv_console.getText().toString();
-                tv_console.setText("Have you ever put your apk into correct directory?" + "\n----\n" + history);
+                tv_console.setText("Have you ever put your APK into correct directory?" + "\n----\n" + history);
             }
         }
     }
@@ -132,7 +132,7 @@ public class OpenResourceActivity extends Activity implements View.OnClickListen
                     //set null as the first parameter of invoke() while invoking a static method.
                     //static String getInputStringStatic(String value)
                     Method getInputStringStatic = apkUtils.getDeclaredMethod("getInputStringStatic", String.class);
-                    String returns1 = (String) getInputStringStatic.invoke(null, "Hello, I'm your classLoader");
+                    String returns1 = (String) getInputStringStatic.invoke(null, "Hello from your classLoader");
                     String history = tv_console.getText().toString();
                     tv_console.setText("getInputStringStatic:\t" + returns1 + "\n----\n" + history);
 
@@ -194,7 +194,7 @@ public class OpenResourceActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
 
                     String history = tv_console.getText().toString();
-                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
+                    tv_console.setText("Load any APK first." + "\n----\n" + history);
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
                 }
@@ -208,7 +208,7 @@ public class OpenResourceActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
 
                     String history = tv_console.getText().toString();
-                    tv_console.setText("Please load any apk first." + "\n----\n" + history);
+                    tv_console.setText("Load any APK first." + "\n----\n" + history);
                 }
                 break;
         }

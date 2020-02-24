@@ -1,34 +1,34 @@
 # ClassLoader
 
-This repository hosts an example of dynamically loading an apk and in-depth documentation.
+This repository hosts an example of dynamically loading an APK and in-depth documentation.
 
-This repo demonstrates how apks can be loaded into an installed app via ClassLoader. Users can automatically update their application without reinstalling it. Once developers fix any bug or update new features, there is no need to re-build your apk (ClassLoader apk), developers upload patch apks to their server.
+This repo demonstrates how APKs can be loaded into an installed app via ClassLoader. Users can automatically update their application without reinstalling it. Once developers fix any bug or update new features, there is no need to re-build your APK (ClassLoader APK), developers upload patch APKs to their server.
 
 ## Use case
 
-1.  Build a ClassLoader apk and patch apk(s).
-2.  Upload the patch apk to your server, only users who have installed ClassLoader apk can download it.
-3.  Users install ClassLoader apk.
-4.  Users open ClassLoader app and download the patch apk(s) which include(s) main business logic of your app.
-5.  Verify patch apk(s) and load classes into the ClassLoader app.
+1.  Build a ClassLoader APK and patch APK(s).
+2.  Upload the patch APK to your server, only users who have installed ClassLoader APK can download it.
+3.  Users install ClassLoader APK.
+4.  Users open ClassLoader app and download the patch APK(s) which include(s) main business logic of your app.
+5.  Verify patch APK(s) and load classes into the ClassLoader app.
 
 Next, you will repeat the following steps again and again in your development life cycle:
 
 1.  Add new features or fix bugs
-2.  Build patch apk
-3.  Update the patch apk in your server
-4.  Users open ClassLoader app to download the patch apk and all the updates will be loaded to the installed app.
+2.  Build patch APK
+3.  Update the patch APK in your server
+4.  Users open ClassLoader app to download the patch APK and all the updates will be loaded to the installed app.
 
-To do so, you must create two projects, ClassLoader and patch apk which combines features and/or layouts.
+To do so, you must create two projects, ClassLoader and patch APK which combines features and/or layouts.
 
 ### The main job of ClassLoader app
 
--   Download and validate the patch apk(s) automatically.
--   Load classes of the patch apk(s).
--   Shrink your app and hide your code in patch apk(s).
--   Switch patch apks. I.e. You can run each patch apk independently without polluting their resources.
+-   Download and validate the patch APK(s) automatically.
+-   Load classes of the patch APK(s).
+-   Shrink your app and hide your code in patch APK(s).
+-   Switch patch APKs. I.e. You can run each patch APK independently without polluting their resources.
 
-### The main job of patch apk(s)
+### The main job of patch APK(s)
 
 -   Provide features like instant messaging, taking photos, scanning QR codes, login or anything.
 -   UI components and business logic are both supported.
@@ -56,7 +56,7 @@ Android virtual machine loads classes just like the way Java does, but they're s
 
 ### Dex
 
-In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an apk, and optimizes those dex files loading with Dalvik.
+In an Android device, it packages your classes into one (or more) dex file(s) which is (are) located in an APK, and optimizes those dex files loading with Dalvik.
 
 ![enter description here][1]
 
@@ -77,7 +77,7 @@ Here are class loaders works on Android:
 | DexClassLoader  | Load classes from .jar and .apk files containing a classes.dex entry. This can be used to execute code not installed as part of an application.            |
 | URLClassLoader  | @hide<br>This class loader is used to load classes and resources from a search path of URLs referring to both JAR files and directories.                   |
 
-First, let's focus on PathClassLoader and DexClassLoader. They both extend BaseDexClassLoader.
+First, assume focus on PathClassLoader and DexClassLoader. They both extend BaseDexClassLoader.
 
 In PathClassLoader.class
 
@@ -102,9 +102,9 @@ It is noticeable that:
 
 1. optimizedDirectory references to optimizes dex files.
 2. PathClassLoader does not accept optimizedDirectory argument, so it is forced to associate the original optimized dex files.
-3. We can pass the optimizedDirectory argument to DexClassLoader(). I.e. we can cache optimized dex files placed in internal storage.
+3. You can pass the optimizedDirectory argument to DexClassLoader(). I.e. you can cache optimized dex files placed in internal storage.
 
-That's why we can call DexClassLoader to load the user-defined apk, dex and jar files whereas PathClassLoader is responsible for loading the installed Apk.
+That's why you can call DexClassLoader to load the user-defined APK, dex and jar files whereas PathClassLoader is responsible for loading the installed Apk.
 
 The code snippet shows how ClassLoader works:
 
@@ -153,7 +153,7 @@ Step1, check if the class has already been loaded
 findLoadedClass(name);
 ```
 
-Step2, if the class is not found, we check if the class has already been loaded with the parent.
+Step2, when the class is not found, check if the class has already been loaded with the parent.
 
 ```java
 if (parent != null) {
@@ -163,17 +163,17 @@ if (parent != null) {
 }
 ```
 
-Step3, if still not found, then invoke findClass in order to find the class.
+Step3, if still not found, then invoke findClass to find the class.
 
 ```java
 findClass(name);
 ```
 
-The above code snippet presents that once a class has been loaded, it'll never be load again.
+The preceding code snippet presents that once a class has been loaded, it'll never be load again.
 
 ## Exercise
 
-Let's play with some scenarios of class loaders.
+Play with some scenarios of class loaders.
 
 ```java
  @Override
@@ -202,12 +202,12 @@ Let's play with some scenarios of class loaders.
 
 ## How to use this app
 
--   This app is used to load classes from another apk, you can launch activities or call methods wrapped in another apk. That's why there is nothing but updating loading and verifying apks in this app.
--   Use `getClassLoader().loadClass()` to get activities from another apk, and access methods or fields by using Java reflection.
+-   This app is used to load classes from another APK, you can launch activities or call methods wrapped in another APK. That's why there is nothing but updating loading and verifying APKs in this app.
+-   Use `getClassLoader().loadClass()` to get activities from another APK, and access methods or fields by using Java reflection.
 
 Here are some reflection examples:
 
-Let's say Utils is the latest released feature, it will be loaded to your ClassLoader app.
+Assume Utils is the latest released feature, it will be loaded to your ClassLoader app.
 
 ```java
 package com.catherine.resource1;
@@ -224,7 +224,7 @@ public class Utils {
     }
 
     public static String getStringValueStatic() {
-        return "(static) Hello, I'm apk1";
+        return "(static) Hello from APK1";
     }
 
     public static int getIntValueStatic() {
@@ -232,7 +232,7 @@ public class Utils {
     }
 
     public String getStringValue() {
-        return "Hello, I'm apk1";
+        return "Hello from APK1";
     }
 
     public int getIntValue() {
@@ -262,7 +262,7 @@ try {
 //set null as the first parameter of invoke() while invoking a static method.
 //static String getInputStringStatic(String value)
 	Method getInputStringStatic = apkUtils.getDeclaredMethod("getInputStringStatic", String.class);
-	String returns1 = (String) getInputStringStatic.invoke(null, "Hello, I'm your classLoader");
+	String returns1 = (String) getInputStringStatic.invoke(null, "Hello from your classLoader");
 	Log.d("Reflection" , returns1);
 
 //static int getInputIntStatic(Integer value)
@@ -365,7 +365,7 @@ In build.gradle
 multiDexEnabled false
 ```
 
-4. Register patch apk's activities and permissions in ClassLoader app's Manifest
+4. Register patch APK's activities and permissions in ClassLoader app's Manifest
 
 Android studio probably throws some errors likes 'Unresolved package...', just ignore them. And don't forget to add the prefix of your activity name with its package.
 
@@ -378,7 +378,7 @@ E.g.
 
 5. Load layouts
 
-In your patch apk, you cannot map the view by calling `setContentView(@LayoutRes int layoutResID)`. Your ClassLoader app cannot find your resources via that method. You most use `View.inflate()`. Because applications access resources via the instance of Resource, new loaded resources will not be found in the original Resource object.
+In your patch APK, you cannot map the view by calling `setContentView(@LayoutRes int layoutResID)`. Your ClassLoader app cannot find your resources via that method. You most use `View.inflate()`. Because applications access resources via the instance of Resource, new loaded resources will not be found in the original Resource object.
 
 E.g.
 
@@ -394,12 +394,12 @@ Instead, replace it with:
 setContentView(View.inflate(getApplicationContext(), R.layout.activity_main, null));
 ```
 
-6. How many patch apks should I load?
+6. How many patch APKs should I load?
 
-Typically, you don't need to load multiple patch apks. Multiple patch apks might cause resource conflicts.
+Typically, you don't need to load multiple patch APKs. Multiple patch APKs might cause resource conflicts.
 
-Assuming you imports the `support-v4` library in both apk1 and apk2, and then you load apk1 first, then you are going to load apk2.  
-You will find your ClassLoader app crashes or some resource errors happens. To fix it, you must have apk2 run on another process so that we can perfectly release loaded resources by killing the process before we switch to another patch apk.
+Assuming you imports the `support-v4` library in both APK1 and APK2, and then you load APK1 first, then you are going to load APK2.  
+You will find your ClassLoader app crashes or some resource errors happens. To fix it, you must have APK2 run on another process so that you can perfectly release loaded resources by terminating the process before you switch to another patch APK.
 
 ```java
 @Override
